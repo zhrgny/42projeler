@@ -1,45 +1,77 @@
-static size_t	get_word_end(char const *s, char c, size_t i)
+#include "libft.h"
+
+static size_t	count_words(char const *s, char c)
 {
-	while (s[i] && s[i] != c)
-		i++;
-	return (i);
+	size_t	count;
+	int		in_word;
+
+	count = 0;
+	in_word = 0;
+	while (*s)
+	{
+		if (*s != c && !in_word)
+		{
+			in_word = 1;
+			count++;
+		}
+		else if (*s == c)
+			in_word = 0;
+		s++;
+	}
+	return (count);
 }
 
-static int	fill_result(char **result, char const *s, char c)
+static void	free_words(char **arr, size_t n)
 {
 	size_t	i;
-	size_t	index;
-	size_t	start;
 
 	i = 0;
-	index = 0;
+	while (i < n)
+		free(arr[i++]);
+	free(arr);
+}
+
+static char	*next_word(char const *s, char c, size_t *i)
+{
+	size_t	start;
+	size_t	len;
+
+	while (s[*i] == c)
+		(*i)++;
+	start = *i;
+	len = 0;
+	while (s[*i + len] && s[*i + len] != c)
+		len++;
+	*i += len;
+	return (ft_substr(s, start, len));
+}
+
+char	**ft_split(char const *s, char c)
+{
+	char	**result;
+	size_t	i;
+	size_t	idx;
+
+	result = malloc(sizeof(char *) * (count_words(s, c) + 1));
+	if (!result)
+		return (NULL);
+	i = 0;
+	idx = 0;
 	while (s[i])
 	{
 		while (s[i] == c)
 			i++;
 		if (s[i])
 		{
-			start = i;
-			i = get_word_end(s, c, i);
-			result[index] = ft_substr(s, start, i - start);
-			if (!result[index])
-				return (ftfree(result, index), 0);
-			index++;
+			result[idx] = next_word(s, c, &i);
+			if (!result[idx])
+			{
+				free_words(result, idx);
+				return (NULL);
+			}
+			idx++;
 		}
-		i++;
 	}
-	result[index] = NULL;
-	return (1);
-}
-
-char	**ft_split(char const *s, char c)
-{
-	char	**result;
-
-	result = malloc(sizeof(char *) * (words_count(s, c) + 1));
-	if (!result)
-		return (NULL);
-	if (!fill_result(result, s, c))
-		return (NULL);
+	result[idx] = NULL;
 	return (result);
 }
