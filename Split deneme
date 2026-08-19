@@ -1,62 +1,32 @@
-static size_t	words(char const *s, char c)
+static size_t	get_word_end(char const *s, char c, size_t i)
 {
-	size_t	i;
-	size_t	words;
-
-	i = 0;
-	words = 0;
-	while (s[i])
-	{
-		if ((s[i] != c) && (i == 0 || (s[i - 1] == c)))
-			words++;
+	while (s[i] && s[i] != c)
 		i++;
-	}
-	return (words);
+	return (i);
 }
 
-static void	free_result(char **result, size_t index)
-{
-	while (index > 0)
-	{
-		index--;
-		free(result[index]);
-	}
-	free(result);
-}
-
-static int	fill_one(char const *s, size_t *i, char c, char **result)
-{
-	size_t	start;
-
-	while (s[*i] == c)
-		(*i)++;
-	if (!s[*i])
-		return (1);
-	start = *i;
-	while (s[*i] && (s[*i] != c))
-		(*i)++;
-	*result = ft_substr(s, start, *i - start);
-	if (!*result)
-		return (0);
-	return (1);
-}
-
-static int	fill_words(char const *s, char c, char **result)
+static int	fill_result(char **result, char const *s, char c)
 {
 	size_t	i;
 	size_t	index;
+	size_t	start;
 
 	i = 0;
 	index = 0;
 	while (s[i])
 	{
-		if (!fill_one(s, &i, c, &result[index]))
+		while (s[i] == c)
+			i++;
+		if (s[i])
 		{
-			free_result(result, index);
-			return (0);
-		}
-		if (result[index])
+			start = i;
+			i = get_word_end(s, c, i);
+			result[index] = ft_substr(s, start, i - start);
+			if (!result[index])
+				return (ftfree(result, index), 0);
 			index++;
+		}
+		i++;
 	}
 	result[index] = NULL;
 	return (1);
@@ -66,10 +36,10 @@ char	**ft_split(char const *s, char c)
 {
 	char	**result;
 
-	result = malloc(sizeof(char *) * (words(s, c) + 1));
+	result = malloc(sizeof(char *) * (words_count(s, c) + 1));
 	if (!result)
 		return (NULL);
-	if (!fill_words(s, c, result))
+	if (!fill_result(result, s, c))
 		return (NULL);
 	return (result);
 }
