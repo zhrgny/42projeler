@@ -31,30 +31,19 @@ static void	free_words(char **arr, size_t n)
 	free(arr);
 }
 
-static char	*next_word(char const *s, char c, size_t *i)
+static size_t	get_word_end(char const *s, char c, size_t i)
 {
-	size_t	start;
-	size_t	len;
-
-	while (s[*i] == c)
-		(*i)++;
-	start = *i;
-	len = 0;
-	while (s[*i + len] && s[*i + len] != c)
-		len++;
-	*i += len;
-	return (ft_substr(s, start, len));
+	while (s[i] && s[i] != c)
+		i++;
+	return (i);
 }
 
-char	**ft_split(char const *s, char c)
+static int	fill_words(char **result, char const *s, char c)
 {
-	char	**result;
 	size_t	i;
 	size_t	idx;
+	size_t	start;
 
-	result = malloc(sizeof(char *) * (count_words(s, c) + 1));
-	if (!result)
-		return (NULL);
 	i = 0;
 	idx = 0;
 	while (s[i])
@@ -63,15 +52,26 @@ char	**ft_split(char const *s, char c)
 			i++;
 		if (s[i])
 		{
-			result[idx] = next_word(s, c, &i);
+			start = i;
+			i = get_word_end(s, c, i);
+			result[idx] = ft_substr(s, start, i - start);
 			if (!result[idx])
-			{
-				free_words(result, idx);
-				return (NULL);
-			}
+				return (free_words(result, idx), 0);
 			idx++;
 		}
 	}
 	result[idx] = NULL;
+	return (1);
+}
+
+char	**ft_split(char const *s, char c)
+{
+	char	**result;
+
+	result = malloc(sizeof(char *) * (count_words(s, c) + 1));
+	if (!result)
+		return (NULL);
+	if (!fill_words(result, s, c))
+		return (NULL);
 	return (result);
 }
