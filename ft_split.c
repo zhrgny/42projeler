@@ -68,7 +68,10 @@ static int	fill_words(char **result, char const *s, char c)
 			i = get_word_end(s, c, i);
 			result[idx] = ft_substr(s, start, i - start);
 			if (!result[idx])
-				return (free_words(result, idx), 0);
+			{
+				free_words(result, idx);
+				return (0);
+			}
 			idx++;
 		}
 	}
@@ -80,6 +83,8 @@ char	**ft_split(char const *s, char c)
 {
 	char	**result;
 
+	if (!s)
+		return (NULL);
 	result = malloc(sizeof(char *) * (count_words(s, c) + 1));
 	if (!result)
 		return (NULL);

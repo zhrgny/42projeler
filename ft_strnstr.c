@@ -35,12 +35,3 @@ char	*ft_strnstr(const char *big, const char *little, size_t len)
 	return (NULL);
 }
 
-
-int	main(void)
-{
-	const char *big = "ababaaabaaa";
-	const char *little = "abaaa";
-
-	printf("%s", ft_strnstr(big,little,10));
-
-}
