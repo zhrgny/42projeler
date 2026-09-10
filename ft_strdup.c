@@ -6,7 +6,7 @@
 /*   By: zguney <zguney@student.42istanbul.com.t    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/13 17:05:11 by zguney            #+#    #+#             */
-/*   Updated: 2026/08/13 18:55:59 by zguney           ###   ########.fr       */
+/*   Updated: 2026/09/10 17:27:27 by zguney           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,11 @@ char	*ft_strdup(const char *s)
 	char	*d;
 	size_t	i;
 
-	d = malloc ((ft_strlen(s) + 1) * sizeof (char));
+	d = malloc((ft_strlen(s) + 1) * sizeof(char));
 	if (!d)
 		return (NULL);
 	i = 0;
-
-	while (i < ft_strlen(s))
+	while (s[i])
 	{
 		d[i] = s[i];
 		i++;
