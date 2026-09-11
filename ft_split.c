@@ -15,20 +15,20 @@
 static size_t	count_words(char const *s, char c)
 {
 	size_t	count;
-	int		in_word;
+	size_t	i;
 
 	count = 0;
-	in_word = 0;
-	while (*s)
+	i = 0;
+	while (s[i])
 	{
-		if (*s != c && !in_word)
+		while (s[i] && s[i] == c)
+			i++;
+		if (s[i])
 		{
-			in_word = 1;
 			count++;
+			while (s[i] && s[i] != c)
+				i++;
 		}
-		else if (*s == c)
-			in_word = 0;
-		s++;
 	}
 	return (count);
 }
