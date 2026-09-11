@@ -33,14 +33,14 @@ static size_t	count_words(char const *s, char c)
 	return (count);
 }
 
-static void	free_words(char **arr, size_t n)
+static void	free_words(char **re, size_t n)
 {
 	size_t	i;
 
 	i = 0;
 	while (i < n)
-		free(arr[i++]);
-	free(arr);
+		free(re[i++]);
+	free(re);
 }
 
 static size_t	get_word_end(char const *s, char c, size_t i)
@@ -53,11 +53,11 @@ static size_t	get_word_end(char const *s, char c, size_t i)
 static int	fill_words(char **result, char const *s, char c)
 {
 	size_t	i;
-	size_t	idx;
+	size_t	word;
 	size_t	start;
 
 	i = 0;
-	idx = 0;
+	word = 0;
 	while (s[i])
 	{
 		while (s[i] == c)
@@ -66,16 +66,16 @@ static int	fill_words(char **result, char const *s, char c)
 		{
 			start = i;
 			i = get_word_end(s, c, i);
-			result[idx] = ft_substr(s, start, i - start);
-			if (!result[idx])
+			result[word] = ft_substr(s, start, i - start);
+			if (!result[word])
 			{
-				free_words(result, idx);
+				free_words(result, word);
 				return (0);
 			}
-			idx++;
+			word++;
 		}
 	}
-	result[idx] = NULL;
+	result[word] = NULL;
 	return (1);
 }
 
