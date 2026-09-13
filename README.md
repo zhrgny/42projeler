@@ -40,7 +40,7 @@ Include the header with `#include "libft.h"`.
 - 42 The Norm
 - [C library documentation](https://man7.org/linux/man-pages/)
 
-**AI usage:** AI was used to better understand certain concepts along the way, such as linked lists and memory management. Once the functions were already implemented, it was also used to double-check the code against the 42 Norm, clarify a few points the subject PDF didn't fully specify, and occasionally help figure out compile errors. AI was not involved in writing any of the function implementations.
+**AI usage:** AI was used to better understand certain concepts along the way, such as linked lists and memory management. Once the functions were already implemented, it was also used to double-check the code against the 42 Norm, clarify a few points the subject PDF didn't fully specify, help figure out compile errors, and assist in drafting and structuring this README file. AI was not involved in writing any of the function implementations.
 
 ## Library overview
 
