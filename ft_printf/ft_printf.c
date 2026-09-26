@@ -32,7 +32,7 @@ static int	ft_check_format(char t, va_list *args)
 				"0123456789ABCDEF"));
 	if (t == '%')
 		return (ft_putchar('%'));
-	return (0);
+	return (ft_putchar('%') + ft_putchar(t));
 }
 
 int	ft_printf(const char *format, ...)
@@ -53,7 +53,7 @@ int	ft_printf(const char *format, ...)
 			i++;
 			len += ft_check_format(format[i], &args);
 		}
-		else if (format[i] != '%')
+		else
 			len += ft_putchar(format[i]);
 		i++;
 	}
